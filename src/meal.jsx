@@ -15,8 +15,6 @@ export default function Meal(){
   }, []);
   
   if(meal){
-
-
     return <div className="container-fluid p-2">
       <div className="d-flex flex-row">
         <img className="img-fluid rounded" src={meal.strMealThumb + "/medium"} alt={meal.strMeal} />
