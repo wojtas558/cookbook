@@ -2,3 +2,6 @@ a{
   color: inherit !important;
   text-decoration: none !important;
 }
+.nav-item > .btn:hover{
+  text-decoration: underline;
+}
