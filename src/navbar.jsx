@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router";
-import { Collapse } from "bootstrap/dist/js/bootstrap.bundle";
+import { Link, Outlet, redirect } from "react-router";
+import { Alert, Collapse } from "bootstrap/dist/js/bootstrap.bundle";
+import { useNavigate } from "react-router";
 
 export default function Navbar(){
   const url = "https://www.themealdb.com/api/json/v1/1/"
@@ -8,6 +9,11 @@ export default function Navbar(){
   const [categories, setCategories] = useState();
   const [countries, setCountries] = useState();
   const [filter, setFilter] = useState("filter.php?c=Beef");
+  const nav = useNavigate();
+
+  useEffect(() => {
+    document.getElementById("search").addEventListener("submit", Search);
+  }, [])
   
   useEffect(() => {
   //categories
@@ -23,6 +29,21 @@ export default function Navbar(){
       setCountries(resp.meals);
     })
   }, [filter]);
+  
+  function Search(event){
+    event.preventDefault();
+    let query = event.target[0].value;
+
+    if(query != ""){
+      setFilter("search.php?s=" + query);
+      event.target[0].value = "";
+
+      nav("/"); 
+    }
+    else{
+      alert("Text box should not be empty")
+    }
+  }
 
 
   return <>
@@ -62,7 +83,7 @@ export default function Navbar(){
         <div className="collapse navbar-collapse flex-grow-0 navbarPart">
           <form className="d-flex" id="search">
             <input className="form-control rounded-end-0" type="search" placeholder="Search"
-            onEnded={() => {}}/>
+            onEnded={() => {Search()}}/>
             <button type="submit" className="btn btn-outline-success rounded-start-0">Search</button>
             </form>
         </div>

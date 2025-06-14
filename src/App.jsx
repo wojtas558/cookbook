@@ -1,31 +1,30 @@
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { Link, useOutletContext } from 'react-router';
-
 
 
 function App(props) {
   const url = "https://www.themealdb.com/api/json/v1/1/"
   const [meals, setMeals] = useState();
-  const category = useOutletContext();
+  const filter = useOutletContext();
   
   useEffect(() => {
-    fetch(url + "filter.php?c=" + category)
+    fetch(url + filter)
     .then(async resp => await resp.json())
-    .then(resp => {
-      setMeals(resp.meals);
+    .then(resp => {      
+      if(resp.meals != "no data found")
+        setMeals(resp.meals);
+      else
+        setMeals([""]);
     });
-
-    console.log("aaa");
     
-  }, [category]);
-
+  }, [filter]);
 
   return (
     <div className='container-fluid'>
-      <div className='row text-center '>
-        <h1 className='p-1'>{category}</h1>
-        {meals ? meals.map((meal) => <Link to={"meal/" + meal.idMeal} key={meal.idMeal} className='col-3'>
+      <div className='row text-center justify-content-center gy-1'>
+        <h1 className='py-4'>{filter.substring(filter.indexOf("?") + 3, filter.length)}</h1>
+        {meals ? meals.map((meal) => <Link to={"meal/" + meal.idMeal} key={meal.idMeal} className='col-6 col-md-4 col-lg-3 col-xl-2'>
           <img className='rounded' src={meal.strMealThumb + "/small"} alt={meal.strMeal} />
           <p>{meal.strMeal}</p>
         </Link>) : "ładownaie"}

@@ -13,7 +13,9 @@ export default function Meal(){
       setMeal(resp.meals[0]);
     });
   }, []);
-  
+
+
+
   if(meal){
     return <div className="container-fluid p-2">
       <div className="d-flex flex-row">
